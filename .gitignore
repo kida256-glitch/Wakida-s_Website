@@ -1,0 +1,17 @@
+# Large photo folder - deploy separately or use Netlify
+Benji_s event life/
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Temporary files
+*.tmp
+*.bak
+*~
