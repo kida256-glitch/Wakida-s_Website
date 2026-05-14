@@ -1,5 +1,7 @@
 // Service Worker for Performance Optimization & Offline Support
-const CACHE_NAME = 'website-cache-v1';
+const CACHE_NAME = 'website-cache-v2';
+const IMAGE_CACHE_NAME = 'website-images-v1';
+
 const ASSETS_TO_CACHE = [
     '/',
     '/index.html',
@@ -19,14 +21,16 @@ const ASSETS_TO_CACHE = [
 // Install event - cache assets
 self.addEventListener('install', (event) => {
     event.waitUntil(
-        caches.open(CACHE_NAME).then((cache) => {
-            console.log('Caching assets');
-            return cache.addAll(ASSETS_TO_CACHE).catch(err => {
-                console.log('Some assets failed to cache', err);
-                // Continue even if some assets fail
-                return Promise.resolve();
-            });
-        })
+        Promise.all([
+            caches.open(CACHE_NAME).then((cache) => {
+                console.log('Caching assets');
+                return cache.addAll(ASSETS_TO_CACHE).catch(err => {
+                    console.log('Some assets failed to cache', err);
+                    return Promise.resolve();
+                });
+            }),
+            caches.open(IMAGE_CACHE_NAME)
+        ])
     );
 });
 
@@ -36,7 +40,7 @@ self.addEventListener('activate', (event) => {
         caches.keys().then((cacheNames) => {
             return Promise.all(
                 cacheNames.map((cacheName) => {
-                    if (cacheName !== CACHE_NAME) {
+                    if (cacheName !== CACHE_NAME && cacheName !== IMAGE_CACHE_NAME) {
                         console.log('Deleting old cache:', cacheName);
                         return caches.delete(cacheName);
                     }
@@ -46,45 +50,50 @@ self.addEventListener('activate', (event) => {
     );
 });
 
-// Fetch event - serve from cache, fall back to network
+// Fetch event - intelligent caching strategy
 self.addEventListener('fetch', (event) => {
-    // Skip non-GET requests
     if (event.request.method !== 'GET') {
         return;
     }
     
-    // Handle requests
-    event.respondWith(
-        caches.match(event.request).then((response) => {
-            // Return cached response if available
-            if (response) {
-                return response;
-            }
-            
-            // Otherwise fetch from network
-            return fetch(event.request)
-                .then((response) => {
-                    // Don't cache non-successful responses
-                    if (!response || response.status !== 200 || response.type === 'error') {
+    const url = new URL(event.request.url);
+    
+    // Image caching strategy - cache first
+    if (event.request.destination === 'image' || url.pathname.includes('/Benji_s') || url.pathname.endsWith('.jpg') || url.pathname.endsWith('.png') || url.pathname.endsWith('.webp')) {
+        event.respondWith(
+            caches.open(IMAGE_CACHE_NAME).then((cache) => {
+                return cache.match(event.request).then((response) => {
+                    return response || fetch(event.request).then((response) => {
+                        if (response && response.status === 200) {
+                            cache.put(event.request, response.clone());
+                        }
                         return response;
-                    }
-                    
-                    // Clone the response
-                    const responseToCache = response.clone();
-                    
-                    // Cache successful responses
-                    caches.open(CACHE_NAME).then((cache) => {
-                        cache.put(event.request, responseToCache);
-                    });
-                    
-                    return response;
-                })
-                .catch(() => {
-                    // Return cached response or offline page
-                    return caches.match(event.request).then((cachedResponse) => {
-                        return cachedResponse || new Response('Offline - Content not available');
+                    }).catch(() => {
+                        return new Response('Image not available');
                     });
                 });
-        })
+            })
+        );
+        return;
+    }
+    
+    // For other assets, use network first, fall back to cache
+    event.respondWith(
+        fetch(event.request)
+            .then((response) => {
+                if (!response || response.status !== 200 || response.type === 'error') {
+                    return response;
+                }
+                const responseToCache = response.clone();
+                caches.open(CACHE_NAME).then((cache) => {
+                    cache.put(event.request, responseToCache);
+                });
+                return response;
+            })
+            .catch(() => {
+                return caches.match(event.request).then((cachedResponse) => {
+                    return cachedResponse || new Response('Offline - Content not available');
+                });
+            })
     );
 });

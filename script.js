@@ -185,27 +185,43 @@ const observerOptions = {
     rootMargin: '0px 0px -100px 0px'
 };
 
+// Use simpler observer on mobile
+const isMobileDevice = () => {
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+};
+
 const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
             entry.target.style.opacity = '1';
             entry.target.style.transform = 'translateY(0)';
-            observer.unobserve(entry.target);
+            // Don't unobserve on mobile - reduces memory churn
+            if (!isMobileDevice()) {
+                observer.unobserve(entry.target);
+            }
         }
     });
 }, observerOptions);
 
-// Observe all sections and cards
+// Only observe elements if not on mobile (for better mobile performance)
 const animatedElements = document.querySelectorAll(
     '.role-card, .project-card, .impact-card, .skill-category, .stat-card, .about-text, .contact-item'
 );
 
-animatedElements.forEach(el => {
-    el.style.opacity = '0';
-    el.style.transform = 'translateY(30px)';
-    el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-    observer.observe(el);
-});
+if (!isMobileDevice()) {
+    animatedElements.forEach(el => {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(30px)';
+        el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        observer.observe(el);
+    });
+} else {
+    // On mobile, just make everything visible immediately
+    animatedElements.forEach(el => {
+        el.style.opacity = '1';
+        el.style.transform = 'translateY(0)';
+    });
+}
 
 // ===================================
 // Contact Form Handling with Formspree

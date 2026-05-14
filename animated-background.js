@@ -13,7 +13,14 @@ class ProceduralGroundBackground {
             return;
         }
         
-        this.gl = this.canvas.getContext('webgl');
+        // Disable on mobile for better performance
+        if (this.isMobileDevice()) {
+            console.log('Animated background disabled on mobile for performance');
+            this.canvas.style.display = 'none';
+            return;
+        }
+        
+        this.gl = this.canvas.getContext('webgl', { antialias: false, powerPreference: 'low-power' });
         if (!this.gl) {
             console.error('WebGL not supported');
             return;
@@ -21,6 +28,10 @@ class ProceduralGroundBackground {
         
         this.animationFrameId = null;
         this.init();
+    }
+    
+    isMobileDevice() {
+        return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
     }
     
     init() {

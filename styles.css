@@ -60,6 +60,36 @@ body {
     touch-action: none;
 }
 
+/* Mobile Performance Optimization */
+@media (max-width: 768px) {
+    /* Disable expensive backdrop filters */
+    [class*="card"],
+    .navbar,
+    .section,
+    .container,
+    .social-link,
+    .footer {
+        backdrop-filter: none !important;
+    }
+    
+    /* Reduce shadows */
+    .btn-primary,
+    .btn-secondary {
+        box-shadow: 0 2px 4px rgba(0, 212, 255, 0.15) !important;
+    }
+    
+    .btn-primary:hover,
+    .btn-secondary:hover {
+        box-shadow: 0 2px 4px rgba(0, 212, 255, 0.15) !important;
+        transform: none !important;
+    }
+    
+    /* Simplify navbar */
+    .navbar {
+        background: rgba(10, 14, 39, 0.98);
+    }
+}
+
 /* Background Animation */
 body::before {
     content: '';
@@ -80,6 +110,36 @@ body::before {
 @keyframes backgroundShift {
     0%, 100% { opacity: 1; }
     50% { opacity: 0.8; }
+}
+
+/* Mobile Performance Optimization */
+@media (max-width: 768px) {
+    /* Disable expensive background animation on mobile */
+    body::before {
+        animation: none !important;
+    }
+    
+    /* Simplify box-shadow on mobile */
+    .btn-primary {
+        box-shadow: 0 2px 8px rgba(0, 212, 255, 0.2) !important;
+    }
+    
+    .btn-primary:hover {
+        box-shadow: 0 2px 8px rgba(0, 212, 255, 0.2) !important;
+    }
+    
+    /* Reduce blur effects on mobile */
+    .navbar {
+        backdrop-filter: none;
+        background: rgba(10, 14, 39, 0.95);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation: none !important;
+        transition: none !important;
+    }
 }
 
 .container {
