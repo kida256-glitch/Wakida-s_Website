@@ -654,7 +654,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const loadMoreBtn = document.getElementById('loadMorePhotos');
 
     // Folder path with proper encoding
-    const photoFolder = 'Benji_s%20event%20life/';
+    const photoFolder = 'Benji_s event life/';
 
     // Array of all photos from Benji_s event life folder
     const allPhotos = [
