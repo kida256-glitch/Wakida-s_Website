@@ -1111,3 +1111,143 @@ footerSocialLinks.forEach(link => {
     });
 });
 
+
+// ===================================
+// Image Modal/Lightbox System
+// ===================================
+class ImageModal {
+    constructor() {
+        this.modal = null;
+        this.currentImageIndex = 0;
+        this.images = [];
+        this.currentImageSrc = null;
+        this.init();
+    }
+
+    init() {
+        // Create modal HTML
+        const modalHTML = `
+            <div class="image-modal" id="imageModal">
+                <button class="image-modal-close" id="modalClose" aria-label="Close image">&times;</button>
+                <button class="image-modal-nav image-modal-prev" id="modalPrev" aria-label="Previous image">&#10094;</button>
+                <div class="image-modal-content">
+                    <img class="image-modal-img" id="modalImage" src="" alt="Full size image">
+                </div>
+                <button class="image-modal-nav image-modal-next" id="modalNext" aria-label="Next image">&#10095;</button>
+                <div class="image-modal-counter" id="modalCounter"></div>
+            </div>
+        `;
+        document.body.insertAdjacentHTML('afterbegin', modalHTML);
+        
+        this.modal = document.getElementById('imageModal');
+        this.modalImage = document.getElementById('modalImage');
+        this.closeBtn = document.getElementById('modalClose');
+        this.prevBtn = document.getElementById('modalPrev');
+        this.nextBtn = document.getElementById('modalNext');
+        this.counter = document.getElementById('modalCounter');
+        
+        // Event listeners
+        this.closeBtn.addEventListener('click', () => this.closeModal());
+        this.prevBtn.addEventListener('click', () => this.showPrevious());
+        this.nextBtn.addEventListener('click', () => this.showNext());
+        this.modal.addEventListener('click', (e) => {
+            if (e.target === this.modal) this.closeModal();
+        });
+        
+        // Keyboard controls
+        document.addEventListener('keydown', (e) => {
+            if (!this.modal.classList.contains('active')) return;
+            if (e.key === 'Escape') this.closeModal();
+            if (e.key === 'ArrowLeft') this.showPrevious();
+            if (e.key === 'ArrowRight') this.showNext();
+        });
+        
+        // Touch support for swipe
+        let touchStartX = 0;
+        this.modal.addEventListener('touchstart', (e) => {
+            touchStartX = e.touches[0].clientX;
+        });
+        this.modal.addEventListener('touchend', (e) => {
+            const touchEndX = e.changedTouches[0].clientX;
+            if (touchStartX - touchEndX > 50) this.showNext();
+            if (touchEndX - touchStartX > 50) this.showPrevious();
+        });
+        
+        this.attachToImages();
+    }
+
+    attachToImages() {
+        // Find all images to attach click handlers
+        const clickableImages = document.querySelectorAll('.gallery-item img, .profile-image, img[data-modal-enable]');
+        
+        clickableImages.forEach((img, index) => {
+            img.addEventListener('click', (e) => {
+                e.stopPropagation();
+                this.collectImages();
+                
+                // Find current image index
+                this.currentImageIndex = Array.from(clickableImages).indexOf(img);
+                this.openModal(img.src, img.alt);
+            });
+        });
+    }
+
+    collectImages() {
+        // Collect all images that should be in the gallery
+        const clickableImages = document.querySelectorAll('.gallery-item img, .profile-image, img[data-modal-enable]');
+        this.images = Array.from(clickableImages).map(img => ({
+            src: img.src,
+            alt: img.alt || 'Image'
+        }));
+    }
+
+    openModal(src, alt) {
+        this.currentImageSrc = src;
+        this.modalImage.src = src;
+        this.modalImage.alt = alt;
+        this.modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+        this.updateCounter();
+    }
+
+    closeModal() {
+        this.modal.classList.remove('active');
+        document.body.style.overflow = 'auto';
+    }
+
+    showNext() {
+        if (this.images.length === 0) return;
+        this.currentImageIndex = (this.currentImageIndex + 1) % this.images.length;
+        const nextImage = this.images[this.currentImageIndex];
+        this.modalImage.src = nextImage.src;
+        this.modalImage.alt = nextImage.alt;
+        this.updateCounter();
+    }
+
+    showPrevious() {
+        if (this.images.length === 0) return;
+        this.currentImageIndex = (this.currentImageIndex - 1 + this.images.length) % this.images.length;
+        const prevImage = this.images[this.currentImageIndex];
+        this.modalImage.src = prevImage.src;
+        this.modalImage.alt = prevImage.alt;
+        this.updateCounter();
+    }
+
+    updateCounter() {
+        if (this.images.length > 1) {
+            this.counter.textContent = `${this.currentImageIndex + 1} / ${this.images.length}`;
+            this.counter.style.display = 'block';
+        } else {
+            this.counter.style.display = 'none';
+        }
+    }
+}
+
+// Initialize modal when DOM is ready
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+        const imageModal = new ImageModal();
+    });
+} else {
+    const imageModal = new ImageModal();
+}
