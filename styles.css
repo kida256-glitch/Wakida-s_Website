@@ -22,16 +22,21 @@
     /* Transitions */
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     --transition-bounce: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    
+    /* Mobile Touch Targets */
+    --touch-target-min: 48px;
 }
 
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
 }
 
 html {
     scroll-behavior: smooth;
+    font-size: 16px;
 }
 
 body {
@@ -81,6 +86,24 @@ body::before {
     max-width: 1200px;
     margin: 0 auto;
     padding: var(--container-padding);
+}
+
+/* ===================================
+   Responsive Images
+   =================================== */
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+img[src] {
+    background-size: cover;
+    background-position: center;
+}
+
+picture {
+    display: block;
 }
 
 /* ===================================
@@ -173,13 +196,25 @@ body::before {
     flex-direction: column;
     cursor: pointer;
     gap: 5px;
+    padding: 8px;
+    min-height: var(--touch-target-min);
+    min-width: var(--touch-target-min);
+    justify-content: center;
+    align-items: center;
+    border-radius: 4px;
+    transition: var(--transition-smooth);
+}
+
+.hamburger:active {
+    background: rgba(0, 212, 255, 0.1);
 }
 
 .hamburger span {
-    width: 25px;
+    width: 24px;
     height: 3px;
     background: var(--primary-blue);
     transition: var(--transition-smooth);
+    border-radius: 2px;
 }
 
 /* ===================================
@@ -259,6 +294,10 @@ body::before {
     border: none;
     cursor: pointer;
     font-size: 1rem;
+    min-height: var(--touch-target-min);
+    min-width: var(--touch-target-min);
+    -webkit-user-select: none;
+    user-select: none;
 }
 
 .btn-primary {
@@ -1417,9 +1456,33 @@ body::before {
 }
 
 /* ===================================
-   Responsive Design
+   Responsive Design & Mobile Optimization
    =================================== */
-@media (max-width: 968px) {
+
+/* Extra Large Screens (1440px+) */
+@media (min-width: 1440px) {
+    .container {
+        max-width: 1400px;
+    }
+    
+    .section {
+        padding: 120px 0;
+    }
+}
+
+/* Large Screens (1024px - 1439px) */
+@media (max-width: 1024px) {
+    :root {
+        --section-padding: 80px 0;
+    }
+    
+    .container {
+        max-width: 960px;
+    }
+}
+
+/* Tablets and Small Laptops (769px - 1023px) */
+@media (max-width: 1023px) {
     .hero-content {
         grid-template-columns: 1fr;
         text-align: center;
@@ -1691,5 +1754,110 @@ body::before {
         width: 45px;
         height: 45px;
         font-size: 1rem;
+    }
+}
+
+/* Ultra-Small Mobile Phones (under 380px) */
+@media (max-width: 380px) {
+    :root {
+        --container-padding: 0 15px;
+    }
+    
+    .hero-name {
+        font-size: 1.5rem;
+    }
+    
+    .section-title {
+        font-size: 1.5rem;
+    }
+    
+    .hero-tagline {
+        font-size: 1rem;
+    }
+    
+    .hero-description {
+        font-size: 0.95rem;
+    }
+    
+    .btn {
+        padding: 10px 20px;
+        font-size: 0.9rem;
+    }
+    
+    .hero-buttons {
+        gap: 10px;
+    }
+    
+    .nav-container {
+        height: 60px;
+    }
+    
+    .nav-logo {
+        font-size: 1.5rem;
+    }
+    
+    .nav-menu {
+        gap: 20px;
+    }
+    
+    .card {
+        padding: 15px;
+    }
+    
+    .accordion-title {
+        font-size: 1.5rem;
+    }
+    
+    .gallery-grid {
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+}
+
+/* Mobile-specific touch optimizations */
+@media (hover: none) and (pointer: coarse) {
+    /* Touch devices - remove hover effects and increase tap targets */
+    
+    .btn {
+        padding: 14px 28px;
+    }
+    
+    .btn:active {
+        transform: scale(0.98);
+        opacity: 0.9;
+    }
+    
+    .card:hover {
+        transform: none;
+    }
+    
+    .card:active {
+        transform: scale(0.99);
+        opacity: 0.95;
+    }
+    
+    .nav-link {
+        padding: 8px 12px;
+    }
+    
+    .nav-link::after {
+        display: none;
+    }
+    
+    input, textarea, select {
+        font-size: 16px;
+        min-height: var(--touch-target-min);
+    }
+}
+
+/* Print styles */
+@media print {
+    .navbar, .footer, .btn, .hamburger {
+        display: none !important;
+    }
+    
+    body {
+        background: white;
+        color: black;
     }
 }

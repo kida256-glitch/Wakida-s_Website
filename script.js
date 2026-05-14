@@ -1,4 +1,19 @@
 // ===================================
+// Mobile Detection & Optimization
+// ===================================
+const isMobile = () => {
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+};
+
+const isTouchDevice = () => {
+    return (
+        (typeof window !== 'undefined' && window.ontouchstart !== undefined) ||
+        (typeof navigator !== 'undefined' && navigator.maxTouchPoints > 0) ||
+        (typeof navigator !== 'undefined' && navigator.msMaxTouchPoints > 0)
+    );
+};
+
+// ===================================
 // Navigation Menu Toggle
 // ===================================
 const hamburger = document.querySelector('.hamburger');
@@ -7,10 +22,19 @@ const navLinks = document.querySelectorAll('.nav-link');
 
 // Toggle mobile menu
 if (hamburger) {
-    hamburger.addEventListener('click', () => {
+    hamburger.addEventListener('click', (e) => {
+        e.stopPropagation();
         hamburger.classList.toggle('active');
         navMenu.classList.toggle('active');
-    });
+    }, { passive: true });
+    
+    // Close menu when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!e.target.closest('.navbar')) {
+            hamburger.classList.remove('active');
+            navMenu.classList.remove('active');
+        }
+    }, { passive: true });
 }
 
 // Close menu when clicking on a link
@@ -20,37 +44,51 @@ navLinks.forEach(link => {
             hamburger.classList.remove('active');
             navMenu.classList.remove('active');
         }
-    });
+    }, { passive: true });
 });
 
 // ===================================
-// Navbar Scroll Effect
+// Navbar Scroll Effect (with passive listener for performance)
 // ===================================
 const navbar = document.querySelector('.navbar');
+let lastScrollY = 0;
+let ticking = false;
 
-window.addEventListener('scroll', () => {
+function updateNavbar() {
     if (window.scrollY > 50) {
         navbar.classList.add('scrolled');
     } else {
         navbar.classList.remove('scrolled');
     }
-});
+    ticking = false;
+}
+
+window.addEventListener('scroll', () => {
+    lastScrollY = window.scrollY;
+    if (!ticking) {
+        window.requestAnimationFrame(updateNavbar);
+        ticking = true;
+    }
+}, { passive: true });
 
 // ===================================
 // Smooth Scroll for Navigation Links (only for anchor links)
 // ===================================
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-            const offsetTop = target.offsetTop - 70;
-            window.scrollTo({
-                top: offsetTop,
-                behavior: 'smooth'
-            });
+        const href = this.getAttribute('href');
+        if (href && href !== '#') {
+            e.preventDefault();
+            const target = document.querySelector(href);
+            if (target) {
+                const offsetTop = target.offsetTop - 70;
+                window.scrollTo({
+                    top: offsetTop,
+                    behavior: 'smooth'
+                });
+            }
         }
-    });
+    }, { passive: false });
 });
 
 // ===================================
@@ -66,6 +104,7 @@ const observer = new IntersectionObserver((entries) => {
         if (entry.isIntersecting) {
             entry.target.style.opacity = '1';
             entry.target.style.transform = 'translateY(0)';
+            observer.unobserve(entry.target);
         }
     });
 }, observerOptions);
