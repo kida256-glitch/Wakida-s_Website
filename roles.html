@@ -3,9 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="theme-color" content="#0a0e27">
+    
+    <!-- Performance Optimization -->
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+    <link rel="preload" href="styles.css" as="style">
+    <link rel="preload" href="script.js" as="script">
     <title>Roles & Communities | Benjamin Wakida Eldon</title>
     <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-SfVOwf7lSH34l7KNfuCI49S4FcHo+RaLmFH1THijJpRJ57dJ5+8DZeIch0NU5+WNIYaAn4Jh/NdO80shFPUu+w==" crossorigin="anonymous">
 </head>
 <body>
     <!-- Animated Background Canvas -->
@@ -108,7 +116,7 @@
         </div>
     </footer>
 
-    <script src="script.js"></script>
-    <script src="animated-background.js"></script>
+    <script defer src="script.js"></script>
+    <script defer src="animated-background.js"></script>
 </body>
 </html>

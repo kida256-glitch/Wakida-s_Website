@@ -1,4 +1,90 @@
 // ===================================
+// Performance Optimization Module
+// ===================================
+const performanceOptimizations = {
+    // Debounce function for scroll/resize events
+    debounce: (fn, delay = 300) => {
+        let timeoutId;
+        return (...args) => {
+            clearTimeout(timeoutId);
+            timeoutId = setTimeout(() => fn(...args), delay);
+        };
+    },
+    
+    // Throttle function for frequent events
+    throttle: (fn, delay = 300) => {
+        let lastRun = 0;
+        return (...args) => {
+            const now = Date.now();
+            if (now - lastRun >= delay) {
+                fn(...args);
+                lastRun = now;
+            }
+        };
+    },
+    
+    // Defer non-critical tasks
+    deferTask: (fn) => {
+        if ('requestIdleCallback' in window) {
+            requestIdleCallback(fn);
+        } else {
+            setTimeout(fn, 1);
+        }
+    },
+    
+    // Preload images for better performance
+    preloadImage: (src) => {
+        const img = new Image();
+        img.src = src;
+    },
+    
+    // Monitor Core Web Vitals
+    monitorPerformance: () => {
+        // LCP - Largest Contentful Paint
+        if ('PerformanceObserver' in window) {
+            try {
+                const lcpObserver = new PerformanceObserver((entryList) => {
+                    const entries = entryList.getEntries();
+                    const lastEntry = entries[entries.length - 1];
+                    console.log('LCP:', lastEntry.renderTime || lastEntry.loadTime);
+                });
+                lcpObserver.observe({ entryTypes: ['largest-contentful-paint'] });
+            } catch (e) {
+                // LCP observer not supported
+            }
+            
+            // CLS - Cumulative Layout Shift
+            try {
+                const clsObserver = new PerformanceObserver((entryList) => {
+                    let totalCLS = 0;
+                    for (const entry of entryList.getEntries()) {
+                        totalCLS += entry.value;
+                    }
+                    console.log('CLS:', totalCLS);
+                });
+                clsObserver.observe({ entryTypes: ['layout-shift'] });
+            } catch (e) {
+                // CLS observer not supported
+            }
+        }
+    }
+};
+
+// Initialize performance monitoring
+performanceOptimizations.monitorPerformance();
+
+// ===================================
+// Service Worker Registration
+// ===================================
+if ('serviceWorker' in navigator) {
+    performanceOptimizations.deferTask(() => {
+        navigator.serviceWorker.register('/sw.js')
+            .then((reg) => console.log('Service Worker registered:', reg))
+            .catch((err) => console.log('Service Worker registration failed:', err));
+    });
+}
+
+// ===================================
 // Mobile Detection & Optimization
 // ===================================
 const isMobile = () => {

@@ -298,6 +298,9 @@ picture {
     min-width: var(--touch-target-min);
     -webkit-user-select: none;
     user-select: none;
+    will-change: transform, box-shadow;
+    backface-visibility: hidden;
+    transform: translateZ(0);
 }
 
 .btn-primary {
@@ -338,6 +341,9 @@ picture {
 .hero-image {
     position: relative;
     animation: fadeInRight 1s ease;
+    will-change: opacity, transform;
+    backface-visibility: hidden;
+    transform: translateZ(0);
 }
 
 .image-wrapper {
@@ -555,6 +561,9 @@ picture {
     transition: var(--transition-smooth);
     position: relative;
     overflow: hidden;
+    will-change: transform, box-shadow;
+    backface-visibility: hidden;
+    transform: translateZ(0);
 }
 
 .role-card::before {
