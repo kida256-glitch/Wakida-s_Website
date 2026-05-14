@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Benjamin Wakida Eldon | Business Computing Student & Community Builder</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Animated Background Canvas -->
+    <canvas id="animated-bg-canvas" class="animated-background"></canvas>
+    
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">BW</a>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link active">Home</a></li>
+                <li><a href="about.html" class="nav-link">About</a></li>
+                <li><a href="roles.html" class="nav-link">Roles</a></li>
+                <li><a href="skills.html" class="nav-link">Skills</a></li>
+                <li><a href="projects.html" class="nav-link">Projects</a></li>
+                <li><a href="impact.html" class="nav-link">Impact</a></li>
+                <li><a href="gallery.html" class="nav-link">Gallery</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <div class="hero-greeting">Hello, I'm</div>
+                    <h1 class="hero-name">Benjamin Wakida Eldon</h1>
+                    <p class="hero-tagline">Business Computing Student | Community Builder | Web3 & Cloud Enthusiast</p>
+                    <p class="hero-description">
+                        Bridging technology and community at Makerere University Business School. 
+                        Passionate about empowering students through cloud computing, blockchain innovation, 
+                        and practical tech education.
+                    </p>
+                    <div class="hero-buttons">
+                        <a href="projects.html" class="btn btn-primary">
+                            <i class="fas fa-code"></i> View My Projects
+                        </a>
+                        <a href="about.html" class="btn btn-secondary">
+                            <i class="fas fa-user"></i> Learn More About Me
+                        </a>
+                        <a href="#contact" class="btn btn-outline">
+                            <i class="fas fa-paper-plane"></i> Get In Touch
+                        </a>
+                    </div>
+                </div>
+                <div class="hero-image">
+                    <div class="image-wrapper">
+                        <div class="image-placeholder">
+                            <img src="Kida prof.png" alt="Benjamin Wakida Eldon - AWS Student Builder" class="profile-image">
+                        </div>
+                        <div class="image-glow"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Interactive Image Accordion Section -->
+    <section id="gallery-preview" class="gallery-preview">
+        <div class="container-full">
+            <div class="accordion-wrapper">
+                <!-- Left Side: Text Content -->
+                <div class="accordion-text">
+                    <h1 class="accordion-title">Explore My Event Journey</h1>
+                    <p class="accordion-description">
+                        From AWS workshops to community events, discover the moments that define my journey 
+                        in building tech communities and empowering students across Uganda.
+                    </p>
+                    <a href="gallery.html" class="btn btn-primary">
+                        <i class="fas fa-images"></i> View Full Gallery
+                    </a>
+                </div>
+                
+                <!-- Right Side: Image Accordion -->
+                <div class="accordion-container">
+                    <div class="accordion-item active" data-index="0">
+                        <img src="Benji_s%20event%20life/AWSUCU%20(14%20of%20193).jpg" alt="AWS Events" onerror="this.src='https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=400&h=450&fit=crop'">
+                        <div class="accordion-overlay"></div>
+                        <span class="accordion-label">AWS Events</span>
+                    </div>
+                    <div class="accordion-item" data-index="1">
+                        <img src="Benji_s%20event%20life/20260411_133021.jpg" alt="Community Building" onerror="this.src='https://images.unsplash.com/photo-1515879218367-8466d910aaa4?w=400&h=450&fit=crop'">
+                        <div class="accordion-overlay"></div>
+                        <span class="accordion-label">Community Building</span>
+                    </div>
+                    <div class="accordion-item" data-index="2">
+                        <img src="Benji_s%20event%20life/20260418_165647.jpg" alt="Tech Workshops" onerror="this.src='https://images.unsplash.com/photo-1531482615713-2afd69097998?w=400&h=450&fit=crop'">
+                        <div class="accordion-overlay"></div>
+                        <span class="accordion-label">Tech Workshops</span>
+                    </div>
+                    <div class="accordion-item" data-index="3">
+                        <img src="Benji_s%20event%20life/IMG_7236.jpg" alt="Leadership Moments" onerror="this.src='https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=400&h=450&fit=crop'">
+                        <div class="accordion-overlay"></div>
+                        <span class="accordion-label">Leadership Moments</span>
+                    </div>
+                    <div class="accordion-item" data-index="4">
+                        <img src="Benji_s%20event%20life/Epicshots256-139.jpg" alt="Event Highlights" onerror="this.src='https://images.unsplash.com/photo-1505373877841-8d25f7d46678?w=400&h=450&fit=crop'">
+                        <div class="accordion-overlay"></div>
+                        <span class="accordion-label">Event Highlights</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Social Links Section -->
+    <section id="social" class="social">
+        <div class="container">
+            <h2 class="section-title">Let's Connect</h2>
+            <p class="section-subtitle">Find me across the web</p>
+            <div class="social-links">
+                <a href="https://github.com/kida256-glitch" target="_blank" class="social-link">
+                    <i class="fab fa-github"></i>
+                    <span>GitHub</span>
+                </a>
+                <a href="https://www.linkedin.com/in/benjamin-eldon-wakida/" target="_blank" class="social-link">
+                    <i class="fab fa-linkedin"></i>
+                    <span>LinkedIn</span>
+                </a>
+                <a href="https://x.com/kidaeldon" target="_blank" class="social-link">
+                    <img src="x-logo.webp" alt="X (Twitter)" class="social-icon-img">
+                    <span>X (Twitter)</span>
+                </a>
+                <a href="https://www.instagram.com/kidaeldon_ug/" target="_blank" class="social-link">
+                    <i class="fab fa-instagram"></i>
+                    <span>Instagram</span>
+                </a>
+                <a href="https://www.tiktok.com/@benjamin.wakida" target="_blank" class="social-link">
+                    <i class="fab fa-tiktok"></i>
+                    <span>TikTok</span>
+                </a>
+                <a href="https://bsky.app" target="_blank" class="social-link">
+                    <i class="fas fa-cloud"></i>
+                    <span>Bluesky</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <h2 class="section-title">Get In Touch</h2>
+            <p class="section-subtitle">Have a project idea or want to collaborate? Let's talk!</p>
+            <div class="contact-content">
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div>
+                            <h3>Location</h3>
+                            <p>Kampala, Uganda</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-university"></i>
+                        <div>
+                            <h3>Institution</h3>
+                            <p>Makerere University Business School</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <div>
+                            <h3>Email</h3>
+                            <p><a href="mailto:benwaeldon@gmail.com" style="color: var(--primary-blue); text-decoration: none;">benwaeldon@gmail.com</a></p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fab fa-whatsapp"></i>
+                        <div>
+                            <h3>WhatsApp</h3>
+                            <p><a href="https://wa.me/256763485381" target="_blank" style="color: var(--accent-green); text-decoration: none;">+256 763 485 381</a></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="contact-form-container">
+                    <form class="contact-form" id="contactForm" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+                        <div class="form-group">
+                            <input type="text" id="name" name="name" placeholder="Your Name" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" id="email" name="email" placeholder="Your Email" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" id="subject" name="subject" placeholder="Subject" required>
+                        </div>
+                        <div class="form-group">
+                            <textarea id="message" name="message" rows="5" placeholder="Your Message" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-paper-plane"></i> Send Message
+                        </button>
+                    </form>
+                    <div class="contact-alternative">
+                        <p style="text-align: center; margin-top: 20px; color: var(--text-secondary);">Or reach me directly via:</p>
+                        <div style="display: flex; gap: 15px; justify-content: center; margin-top: 15px;">
+                            <a href="https://wa.me/256763485381?text=Hi%20Benjamin,%20I%20would%20like%20to%20connect%20with%20you" target="_blank" class="btn btn-secondary" style="background: #25D366; display: inline-flex; align-items: center; gap: 8px;">
+                                <i class="fab fa-whatsapp"></i> WhatsApp Me
+                            </a>
+                            <a href="mailto:benwaeldon@gmail.com" class="btn btn-outline">
+                                <i class="fas fa-envelope"></i> Email Me
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Premium Footer -->
+    <footer class="premium-footer">
+        <div class="container">
+            <!-- Scroll to Top Button -->
+            <div class="scroll-top-container">
+                <button id="scrollToTop" class="scroll-top-btn" aria-label="Scroll to top">
+                    <i class="fas fa-arrow-up"></i>
+                </button>
+            </div>
+            
+            <div class="footer-brand">
+                <h2 class="footer-name">Benjamin Wakida Eldon</h2>
+                <p class="footer-tagline">DEV BENJI</p>
+            </div>
+            
+            <!-- Social Links in Footer -->
+            <div class="footer-social-links">
+                <a href="https://github.com/kida256-glitch" target="_blank" class="footer-social-link" aria-label="GitHub">
+                    <i class="fab fa-github"></i>
+                </a>
+                <a href="https://www.linkedin.com/in/benjamin-eldon-wakida/" target="_blank" class="footer-social-link" aria-label="LinkedIn">
+                    <i class="fab fa-linkedin"></i>
+                </a>
+                <a href="https://x.com/kidaeldon" target="_blank" class="footer-social-link" aria-label="X (Twitter)">
+                    <img src="x-logo.webp" alt="X" class="footer-social-icon-img">
+                </a>
+                <a href="https://www.instagram.com/kidaeldon_ug/" target="_blank" class="footer-social-link" aria-label="Instagram">
+                    <i class="fab fa-instagram"></i>
+                </a>
+                <a href="https://www.tiktok.com/@benjamin.wakida" target="_blank" class="footer-social-link" aria-label="TikTok">
+                    <i class="fab fa-tiktok"></i>
+                </a>
+                <a href="https://bsky.app" target="_blank" class="footer-social-link" aria-label="Bluesky">
+                    <i class="fas fa-cloud"></i>
+                </a>
+            </div>
+            
+            <div class="footer-copyright">
+                <p>Copyright © Benjamin Wakida Eldon. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script src="animated-background.js"></script>
+</body>
+</html>

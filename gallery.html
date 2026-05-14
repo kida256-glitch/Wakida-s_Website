@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gallery | Benjamin Wakida Eldon</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Animated Background Canvas -->
+    <canvas id="animated-bg-canvas" class="animated-background"></canvas>
+    
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">BW</a>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="about.html" class="nav-link">About</a></li>
+                <li><a href="roles.html" class="nav-link">Roles</a></li>
+                <li><a href="skills.html" class="nav-link">Skills</a></li>
+                <li><a href="projects.html" class="nav-link">Projects</a></li>
+                <li><a href="impact.html" class="nav-link">Impact</a></li>
+                <li><a href="gallery.html" class="nav-link active">Gallery</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Gallery Section -->
+    <section id="gallery-page" class="gallery page-section">
+        <div class="container">
+            <h2 class="section-title">My Event <span class="highlight-text">Gallery</span></h2>
+            <p class="section-subtitle">A visual journey through my tech community events and experiences</p>
+            
+            <div class="gallery-grid" id="photoGallery">
+                <!-- Photos will be loaded dynamically -->
+            </div>
+            
+            <div class="gallery-cta">
+                <button class="btn btn-primary" id="loadMorePhotos">
+                    <i class="fas fa-images"></i> Load More Stories
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-text">
+                    <p>&copy; 2026 Benjamin Wakida Eldon. Built with passion for technology and community.</p>
+                    <p class="footer-tagline">Empowering students through technology | Uganda 🇺🇬</p>
+                </div>
+                <div class="footer-links">
+                    <a href="index.html">Home</a>
+                    <a href="about.html">About</a>
+                    <a href="projects.html">Projects</a>
+                    <a href="gallery.html">Gallery</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script src="animated-background.js"></script>
+</body>
+</html>

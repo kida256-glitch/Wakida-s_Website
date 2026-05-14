@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Image Test</title>
+    <style>
+        img { width: 200px; height: 250px; object-fit: cover; margin: 10px; border: 2px solid #00d4ff; }
+    </style>
+</head>
+<body>
+    <h1>Testing Image Paths</h1>
+    
+    <h2>Test 1: Direct path with space</h2>
+    <img src="Benji_s event life/20241204_185815~2.jpg" alt="Test 1">
+    
+    <h2>Test 2: URL encoded space</h2>
+    <img src="Benji_s%20event%20life/20241204_185815~2.jpg" alt="Test 2">
+    
+    <h2>Test 3: Another photo</h2>
+    <img src="Benji_s%20event%20life/IMG_7236.jpg" alt="Test 3">
+    
+    <h2>Test 4: AWS photo</h2>
+    <img src="Benji_s%20event%20life/AWSUCU (14 of 193).jpg" alt="Test 4">
+    
+    <script>
+        document.querySelectorAll('img').forEach((img, index) => {
+            img.onload = () => console.log(`Image ${index + 1} loaded successfully:`, img.src);
+            img.onerror = () => console.error(`Image ${index + 1} failed to load:`, img.src);
+        });
+    </script>
+</body>
+</html>
