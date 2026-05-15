@@ -2103,3 +2103,217 @@ picture {
         opacity: 1;
     }
 }
+
+
+/* ===================================
+   Image Modal/Lightbox
+   =================================== */
+.image-modal {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.95);
+    backdrop-filter: blur(10px);
+    animation: modalFadeIn 0.3s ease;
+}
+
+.image-modal.active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@keyframes modalFadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.modal-content {
+    max-width: 90%;
+    max-height: 85vh;
+    object-fit: contain;
+    border-radius: 10px;
+    box-shadow: 0 20px 60px rgba(0, 212, 255, 0.3);
+    animation: modalImageZoom 0.4s ease;
+    user-select: none;
+}
+
+@keyframes modalImageZoom {
+    from {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.modal-close {
+    position: absolute;
+    top: 20px;
+    right: 35px;
+    color: var(--text-primary);
+    font-size: 50px;
+    font-weight: 300;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+    z-index: 10000;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 50%;
+    border: 2px solid rgba(0, 212, 255, 0.3);
+}
+
+.modal-close:hover {
+    color: var(--primary-blue);
+    background: rgba(0, 212, 255, 0.1);
+    border-color: var(--primary-blue);
+    transform: rotate(90deg);
+}
+
+.modal-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.7);
+    border: 2px solid rgba(0, 212, 255, 0.3);
+    color: var(--text-primary);
+    font-size: 30px;
+    padding: 20px;
+    cursor: pointer;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition-smooth);
+    z-index: 10000;
+}
+
+.modal-nav:hover {
+    background: rgba(0, 212, 255, 0.2);
+    border-color: var(--primary-blue);
+    color: var(--primary-blue);
+    transform: translateY(-50%) scale(1.1);
+}
+
+.modal-nav:active {
+    transform: translateY(-50%) scale(0.95);
+}
+
+.modal-prev {
+    left: 30px;
+}
+
+.modal-next {
+    right: 30px;
+}
+
+.modal-caption {
+    position: absolute;
+    bottom: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: var(--text-primary);
+    font-size: 1.2rem;
+    font-weight: 600;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.7);
+    padding: 15px 30px;
+    border-radius: 30px;
+    border: 1px solid rgba(0, 212, 255, 0.3);
+    backdrop-filter: blur(10px);
+    max-width: 80%;
+}
+
+.modal-counter {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: var(--text-secondary);
+    font-size: 1rem;
+    background: rgba(0, 0, 0, 0.7);
+    padding: 10px 20px;
+    border-radius: 20px;
+    border: 1px solid rgba(0, 212, 255, 0.2);
+    backdrop-filter: blur(10px);
+}
+
+/* Mobile Responsive Modal */
+@media (max-width: 768px) {
+    .modal-content {
+        max-width: 95%;
+        max-height: 80vh;
+    }
+    
+    .modal-close {
+        top: 10px;
+        right: 10px;
+        font-size: 40px;
+        width: 50px;
+        height: 50px;
+    }
+    
+    .modal-nav {
+        width: 50px;
+        height: 50px;
+        font-size: 24px;
+        padding: 15px;
+    }
+    
+    .modal-prev {
+        left: 10px;
+    }
+    
+    .modal-next {
+        right: 10px;
+    }
+    
+    .modal-caption {
+        bottom: 60px;
+        font-size: 1rem;
+        padding: 10px 20px;
+        max-width: 90%;
+    }
+    
+    .modal-counter {
+        bottom: 15px;
+        font-size: 0.9rem;
+        padding: 8px 16px;
+    }
+}
+
+/* Touch gestures hint */
+@media (max-width: 768px) {
+    .image-modal::after {
+        content: 'Swipe left or right to navigate';
+        position: absolute;
+        bottom: 100px;
+        left: 50%;
+        transform: translateX(-50%);
+        color: var(--text-secondary);
+        font-size: 0.85rem;
+        opacity: 0.7;
+        animation: fadeOut 3s ease forwards;
+    }
+    
+    @keyframes fadeOut {
+        0%, 70% { opacity: 0.7; }
+        100% { opacity: 0; }
+    }
+}
