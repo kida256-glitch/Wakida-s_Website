@@ -1448,13 +1448,6 @@ if (document.readyState === 'loading') {
     const imageModal = new ImageModal();
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-        const imageModal = new ImageModal();
-    });
-} else {
-    const imageModal = new ImageModal();
-}
-
 
 // ===================================
 // Image Modal/Lightbox Functionality
