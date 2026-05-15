@@ -1270,9 +1270,185 @@ class ImageModal {
     }
 }
 
-// Initialize modal when DOM is ready
+// ===================================
+// Image Swiper Component (Vanilla JS)
+// ===================================
+class ImageSwiper {
+    constructor(containerId, options = {}) {
+        this.container = document.getElementById(containerId);
+        if (!this.container) return;
+        
+        this.cardWidth = options.cardWidth || 280;
+        this.cardHeight = options.cardHeight || 380;
+        this.cardSpacing = options.cardSpacing || 12;
+        
+        // Get images and labels from data attributes
+        const imagesStr = this.container.getAttribute('data-images') || '';
+        const labelsStr = this.container.getAttribute('data-labels') || '';
+        
+        this.images = imagesStr.split(',').map(img => img.trim()).filter(img => img);
+        this.labels = labelsStr.split(',').map(label => label.trim()).filter(label => label);
+        
+        this.cardOrder = Array.from({ length: this.images.length }, (_, i) => i);
+        this.isSwiping = false;
+        this.startX = 0;
+        this.currentX = 0;
+        this.animationFrameId = null;
+        
+        this.init();
+    }
+    
+    init() {
+        this.renderCards();
+        this.attachEventListeners();
+    }
+    
+    renderCards() {
+        // Clear existing cards
+        this.container.innerHTML = '';
+        
+        // Create cards based on current order
+        this.cardOrder.forEach((originalIndex, displayIndex) => {
+            const card = document.createElement('article');
+            card.className = 'swiper-card';
+            card.dataset.index = displayIndex;
+            
+            const zIndex = this.images.length - displayIndex;
+            const offsetY = displayIndex * this.cardSpacing;
+            
+            card.style.cssText = `
+                z-index: ${zIndex};
+                transform: translateY(${offsetY}px) scale(${1 - displayIndex * 0.05});
+                opacity: ${displayIndex === 0 ? 1 : 0.7};
+            `;
+            
+            card.innerHTML = `
+                <img src="${this.images[originalIndex]}" alt="${this.labels[originalIndex] || 'Event image'}" loading="lazy">
+                <div class="swiper-card-label">${this.labels[originalIndex] || ''}</div>
+            `;
+            
+            this.container.appendChild(card);
+        });
+    }
+    
+    attachEventListeners() {
+        this.container.addEventListener('pointerdown', (e) => this.handleStart(e));
+        this.container.addEventListener('pointermove', (e) => this.handleMove(e));
+        this.container.addEventListener('pointerup', (e) => this.handleEnd(e));
+        this.container.addEventListener('pointercancel', (e) => this.handleEnd(e));
+    }
+    
+    handleStart(e) {
+        if (this.isSwiping) return;
+        this.isSwiping = true;
+        this.startX = e.clientX;
+        this.currentX = e.clientX;
+    }
+    
+    handleMove(e) {
+        if (!this.isSwiping) return;
+        
+        if (this.animationFrameId) {
+            cancelAnimationFrame(this.animationFrameId);
+        }
+        
+        this.animationFrameId = requestAnimationFrame(() => {
+            this.currentX = e.clientX;
+            const deltaX = this.currentX - this.startX;
+            this.applySwipeStyles(deltaX);
+            
+            // Auto-complete swipe if threshold exceeded
+            if (Math.abs(deltaX) > 100) {
+                this.handleEnd(e);
+            }
+        });
+    }
+    
+    handleEnd(e) {
+        if (!this.isSwiping) return;
+        
+        if (this.animationFrameId) {
+            cancelAnimationFrame(this.animationFrameId);
+            this.animationFrameId = null;
+        }
+        
+        const deltaX = this.currentX - this.startX;
+        const threshold = 50;
+        
+        if (Math.abs(deltaX) > threshold) {
+            // Swipe completed - rotate cards
+            setTimeout(() => {
+                this.rotateCards(deltaX > 0);
+            }, 150);
+        } else {
+            // Swipe cancelled - reset
+            this.resetCards();
+        }
+        
+        this.isSwiping = false;
+        this.startX = 0;
+        this.currentX = 0;
+    }
+    
+    applySwipeStyles(deltaX) {
+        const cards = this.container.querySelectorAll('.swiper-card');
+        const activeCard = cards[0];
+        
+        if (!activeCard) return;
+        
+        // Calculate rotation based on delta
+        const rotation = (deltaX / 100) * 20;
+        const scale = 1 - (Math.abs(deltaX) / 300) * 0.05;
+        const opacity = 1 - (Math.abs(deltaX) / 200) * 0.5;
+        
+        activeCard.style.transform = `translateX(${deltaX}px) rotateZ(${rotation}deg) scale(${Math.max(0.8, scale)})`;
+        activeCard.style.opacity = Math.max(0.3, opacity);
+    }
+    
+    resetCards() {
+        const cards = this.container.querySelectorAll('.swiper-card');
+        cards.forEach((card, i) => {
+            const offsetY = i * this.cardSpacing;
+            card.style.transform = `translateY(${offsetY}px) scale(${1 - i * 0.05})`;
+            card.style.opacity = i === 0 ? 1 : 0.7;
+        });
+    }
+    
+    rotateCards(isNext) {
+        // Animate out the front card
+        const cards = this.container.querySelectorAll('.swiper-card');
+        const activeCard = cards[0];
+        
+        if (activeCard) {
+            const direction = isNext ? 1 : -1;
+            activeCard.style.transform = `translateX(${direction * 400}px) rotateZ(${direction * 20}deg)`;
+            activeCard.style.opacity = '0';
+        }
+        
+        // Update order after animation
+        setTimeout(() => {
+            if (isNext) {
+                this.cardOrder.push(this.cardOrder.shift());
+            } else {
+                this.cardOrder.unshift(this.cardOrder.pop());
+            }
+            this.renderCards();
+        }, 300);
+    }
+}
+
+// Initialize swiper when DOM is ready
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => {
+        new ImageSwiper('eventSwiper');
+        const imageModal = new ImageModal();
+    });
+} else {
+    new ImageSwiper('eventSwiper');
+    const imageModal = new ImageModal();
+}
+
+document.addEventListener('DOMContentLoaded', () => {
         const imageModal = new ImageModal();
     });
 } else {
