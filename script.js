@@ -1208,8 +1208,12 @@ class ImageModal {
                 e.stopPropagation();
                 this.collectImages();
                 
-                // Find current image index
-                this.currentImageIndex = Array.from(clickableImages).indexOf(img);
+                // Find current image index in the collected images array
+                this.currentImageIndex = this.images.findIndex(item => item.src === img.src);
+                if (this.currentImageIndex === -1) {
+                    // Fallback to the clicked image if not found
+                    this.currentImageIndex = 0;
+                }
                 this.openModal(img.src, img.alt);
             });
         });

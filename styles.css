@@ -1957,12 +1957,15 @@ picture {
 
 .image-modal-content {
     position: relative;
-    max-width: 95vw;
-    max-height: 95vh;
+    width: 90vw;
+    height: 90vh;
+    max-width: 90vw;
+    max-height: 90vh;
     display: flex;
     align-items: center;
     justify-content: center;
     animation: zoomIn 0.3s ease-in-out;
+    flex-shrink: 0;
 }
 
 .image-modal-img {
@@ -1971,8 +1974,10 @@ picture {
     width: auto;
     height: auto;
     object-fit: contain;
+    object-position: center;
     border-radius: 8px;
     box-shadow: 0 0 50px rgba(0, 212, 255, 0.5);
+    flex-shrink: 0;
 }
 
 .image-modal-close {
@@ -2014,6 +2019,11 @@ picture {
     transition: all 0.3s ease;
     z-index: 10000;
     border: none;
+    min-width: 50px;
+    min-height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .image-modal-nav:hover {
