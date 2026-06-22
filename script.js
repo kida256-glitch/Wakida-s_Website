@@ -1,4 +1,4 @@
-// ===================================
+﻿// ===================================
 // Performance Optimization Module
 // ===================================
 const performanceOptimizations = {
@@ -78,7 +78,7 @@ performanceOptimizations.monitorPerformance();
 // ===================================
 if ('serviceWorker' in navigator) {
     performanceOptimizations.deferTask(() => {
-        navigator.serviceWorker.register('/sw.js')
+        navigator.serviceWorker.register('./sw.js')
             .then((reg) => console.log('Service Worker registered:', reg))
             .catch((err) => console.log('Service Worker registration failed:', err));
     });
@@ -394,29 +394,32 @@ if (sections.length > 1) {
 }
 
 // ===================================
-// Project Card Tilt Effect
+// Project Card Tilt Effect (desktop only)
 // ===================================
 const projectCards = document.querySelectorAll('.project-card, .role-card');
+const enableCardTilt = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
 
-projectCards.forEach(card => {
-    card.addEventListener('mousemove', (e) => {
-        const rect = card.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        
-        const centerX = rect.width / 2;
-        const centerY = rect.height / 2;
-        
-        const rotateX = (y - centerY) / 10;
-        const rotateY = (centerX - x) / 10;
-        
-        card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-10px)`;
+if (enableCardTilt) {
+    projectCards.forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+
+            const rotateX = (y - centerY) / 10;
+            const rotateY = (centerX - x) / 10;
+
+            card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-10px)`;
+        });
+
+        card.addEventListener('mouseleave', () => {
+            card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) translateY(0)';
+        });
     });
-    
-    card.addEventListener('mouseleave', () => {
-        card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) translateY(0)';
-    });
-});
+}
 
 // ===================================
 // Skill Tags Animation on Hover
@@ -455,7 +458,7 @@ if (statNumbers.length > 0) {
                 const text = stat.textContent;
                 
                 // Skip if not a number
-                if (text === '∞') return;
+                if (text === 'âˆž') return;
                 
                 const target = parseInt(text);
                 const duration = 2000;
@@ -535,13 +538,15 @@ const socialLinks = document.querySelectorAll('.social-link');
 
 socialLinks.forEach(link => {
     link.addEventListener('mouseenter', () => {
-        const icon = link.querySelector('i');
+        const icon = link.querySelector('.social-icon-img, i');
+        if (!icon) return;
         icon.style.transform = 'scale(1.2) rotate(5deg)';
         icon.style.transition = 'transform 0.3s ease';
     });
     
     link.addEventListener('mouseleave', () => {
-        const icon = link.querySelector('i');
+        const icon = link.querySelector('.social-icon-img, i');
+        if (!icon) return;
         icon.style.transform = 'scale(1) rotate(0deg)';
     });
 });
@@ -549,10 +554,10 @@ socialLinks.forEach(link => {
 // ===================================
 // Console Easter Egg
 // ===================================
-console.log('%c👋 Hello, Developer!', 'color: #00d4ff; font-size: 24px; font-weight: bold;');
+console.log('%cðŸ‘‹ Hello, Developer!', 'color: #00d4ff; font-size: 24px; font-weight: bold;');
 console.log('%cWelcome to Benjamin Wakida\'s Portfolio', 'color: #00ff88; font-size: 16px;');
 console.log('%cInterested in the code? Check out my GitHub: https://github.com/kida256-glitch', 'color: #94a3b8; font-size: 14px;');
-console.log('%cLet\'s build something amazing together! 🚀', 'color: #00d4ff; font-size: 14px;');
+console.log('%cLet\'s build something amazing together! ðŸš€', 'color: #00d4ff; font-size: 14px;');
 
 // ===================================
 // Performance Optimization
@@ -646,445 +651,6 @@ if (accordionItems.length > 0) {
     accordionItems[accordionItems.length - 1].classList.add('active');
 }
 
-// ===================================
-// Photo Gallery Dynamic Loading
-// ===================================
-document.addEventListener('DOMContentLoaded', function() {
-    const photoGallery = document.getElementById('photoGallery');
-    const loadMoreBtn = document.getElementById('loadMorePhotos');
-
-    // Folder path with proper encoding
-    const photoFolder = 'kida101/';
-
-    // Array of all photos from kida101 folder
-    const allPhotos = [
-    '20241204_185815~2.jpg',
-    '20250116_133650~2.jpg',
-    '20250628_141154.jpg',
-    '20250628_183730.jpg',
-    '20250628_183842.jpg',
-    '20250628_183845.jpg',
-    '20251011_175439.jpg',
-    '20251011_175446.jpg',
-    '20251011_175452.jpg',
-    '20251011_175455.jpg',
-    '20251011_175505.jpg',
-    '20251011_175631.jpg',
-    '20251011_175631~2.jpg',
-    '20251011_175636.jpg',
-    '20251011_175923.jpg',
-    '20251018_115758.jpg',
-    '20251018_115803.jpg',
-    '20251018_115823.jpg',
-    '20251018_180346.jpg',
-    '20251018_180738.jpg',
-    '20251018_180801.jpg',
-    '20251018_181343.jpg',
-    '20251018_181445.jpg',
-    '20251018_181459.jpg',
-    '20251018_181544.jpg',
-    '20251018_184544~2.jpg',
-    '20251018_185037.jpg',
-    '20251025_124346.jpg',
-    '20251025_124351.jpg',
-    '20251025_124537.jpg',
-    '20251025_124550.jpg',
-    '20251025_124625.jpg',
-    '20251025_124633.jpg',
-    '20251025_124744.jpg',
-    '20251025_124825.jpg',
-    '20251025_124829.jpg',
-    '20251025_125131.jpg',
-    '20251025_125136.jpg',
-    '20251025_182218.jpg',
-    '20251025_182232.jpg',
-    '20251025_182307.jpg',
-    '20251025_182321.jpg',
-    '20251025_182325.jpg',
-    '20251031_104632.jpg',
-    '20251031_104641.jpg',
-    '20251031_104642.jpg',
-    '20251031_105115.jpg',
-    '20251031_105130.jpg',
-    '20251031_105131(0).jpg',
-    '20251031_105131.jpg',
-    '20251101_181250.jpg',
-    '20251101_181252.jpg',
-    '20251101_181300.jpg',
-    '20260228_145525.jpg',
-    '20260228_145539.jpg',
-    '20260228_145639.jpg',
-    '20260228_145642.jpg',
-    '20260228_145644.jpg',
-    '20260228_145648.jpg',
-    '20260228_145649.jpg',
-    '20260228_175750.jpg',
-    '20260228_175751.jpg',
-    '20260313_124834.jpg',
-    '20260313_124848.jpg',
-    '20260320_110838.jpg',
-    '20260320_111101.jpg',
-    '20260320_111224.jpg',
-    '20260320_111231.jpg',
-    '20260320_111236.jpg',
-    '20260320_111239.jpg',
-    '20260320_113623.jpg',
-    '20260320_134605.jpg',
-    '20260320_134635.jpg',
-    '20260320_134708.jpg',
-    '20260320_135015.jpg',
-    '20260411_133015.jpg',
-    '20260411_133019.jpg',
-    '20260411_133021.jpg',
-    '20260411_133042.jpg',
-    '20260411_133046.jpg',
-    '20260411_133105(0).jpg',
-    '20260411_133105.jpg',
-    '20260411_133108.jpg',
-    '20260411_133110(0).jpg',
-    '20260411_133110.jpg',
-    '20260411_134015.jpg',
-    '20260411_134306.jpg',
-    '20260411_134337.jpg',
-    '20260411_134412.jpg',
-    '20260411_134417.jpg',
-    '20260411_134419.jpg',
-    '20260411_134422.jpg',
-    '20260411_134501.jpg',
-    '20260411_135549(0).jpg',
-    '20260411_135621.jpg',
-    '20260411_143658.jpg',
-    '20260411_145910.jpg',
-    '20260411_145937.jpg',
-    '20260411_153702.jpg',
-    '20260411_153707.jpg',
-    '20260411_153714.jpg',
-    '20260411_153737.jpg',
-    '20260411_153739.jpg',
-    '20260411_153742.jpg',
-    '20260411_153920.jpg',
-    '20260411_153934.jpg',
-    '20260411_154053.jpg',
-    '20260411_154058.jpg',
-    '20260416_124543.jpg',
-    '20260416_124557.jpg',
-    '20260416_125320.jpg',
-    '20260416_125321.jpg',
-    '20260416_125338.jpg',
-    '20260416_125340.jpg',
-    '20260417_171642.jpg',
-    '20260417_171643.jpg',
-    '20260417_171646.jpg',
-    '20260417_171648.jpg',
-    '20260417_171709.jpg',
-    '20260417_182945.jpg',
-    '20260417_182948.jpg',
-    '20260417_182950.jpg',
-    '20260417_182955.jpg',
-    '20260417_183013.jpg',
-    '20260417_183016.jpg',
-    '20260417_183017.jpg',
-    '20260417_183045.jpg',
-    '20260417_183050.jpg',
-    '20260417_183058.jpg',
-    '20260418_114452.jpg',
-    '20260418_165633.jpg',
-    '20260418_165638.jpg',
-    '20260418_165647.jpg',
-    '20260418_165655.jpg',
-    '20260418_165658.jpg',
-    '20260418_165703.jpg',
-    '20260418_165712.jpg',
-    '20260418_165716.jpg',
-    '20260418_165717.jpg',
-    '20260418_165734.jpg',
-    '20260418_165738.jpg',
-    '20260418_165744.jpg',
-    '20260418_165753.jpg',
-    '20260418_165800.jpg',
-    '20260418_165812.jpg',
-    '20260418_165814.jpg',
-    '20260418_165817.jpg',
-    '20260418_165827.jpg',
-    '20260418_165829.jpg',
-    '20260418_165831.jpg',
-    '20260418_165837.jpg',
-    '20260418_165839.jpg',
-    '20260418_165841.jpg',
-    '20260418_165842.jpg',
-    '20260418_165845.jpg',
-    '20260418_165846.jpg',
-    '20260418_165848.jpg',
-    '20260418_170048.jpg',
-    '20260418_170049.jpg',
-    '20260418_170053.jpg',
-    '20260418_170055.jpg',
-    '20260418_170058.jpg',
-    '20260418_170059.jpg',
-    '20260418_170101.jpg',
-    '20260418_170102.jpg',
-    '20260418_170111.jpg',
-    '20260418_170113.jpg',
-    '20260418_170114.jpg',
-    '20260418_170115.jpg',
-    '20260418_170116.jpg',
-    '20260418_170118.jpg',
-    '20260418_170119.jpg',
-    '20260418_170120.jpg',
-    '20260418_170122.jpg',
-    '20260418_170127.jpg',
-    '20260418_170128.jpg',
-    '20260418_170133.jpg',
-    '20260418_170135.jpg',
-    '20260418_170136.jpg',
-    '20260418_170138.jpg',
-    '20260418_172624.jpg',
-    '20260418_172631.jpg',
-    '20260418_180757.jpg',
-    '20260418_184504.jpg',
-    '20260418_184511.jpg',
-    '20260418_184517.jpg',
-    '20260418_184521.jpg',
-    '20260419_152953.jpg',
-    '20260419_152959.jpg',
-    '20260419_153002.jpg',
-    '20260419_153005.jpg',
-    '20260419_153006.jpg',
-    '20260425_155752.jpg',
-    '20260425_155806.jpg',
-    '20260425_155810.jpg',
-    '20260425_155811.jpg',
-    '20260425_155816.jpg',
-    '20260425_155825.jpg',
-    '20260425_155827.jpg',
-    '20260425_155901.jpg',
-    '20260425_155904.jpg',
-    '20260425_155909.jpg',
-    '20260425_155911.jpg',
-    '20260425_155921.jpg',
-    '20260425_155923.jpg',
-    '20260425_174237.jpg',
-    '20260425_174239.jpg',
-    '20260425_174603.jpg',
-    '20260425_175317.jpg',
-    '20260425_175318.jpg',
-    '20260425_175337.jpg',
-    '20260425_175356.jpg',
-    '20260425_175423.jpg',
-    '20260425_175429.jpg',
-    '20260425_175432.jpg',
-    '20260425_175913.jpg',
-    '20260425_175918.jpg',
-    '20260425_175929.jpg',
-    '20260425_175931.jpg',
-    '20260425_175938.jpg',
-    '20260425_193114.jpg',
-    '20260425_193121.jpg',
-    '20260425_200018.jpg',
-    '20260425_200019(0).jpg',
-    '20260425_200035.jpg',
-    '20260425_200048.jpg',
-    '20260425_200100.jpg',
-    '20260430_135006.jpg',
-    '20260430_135115.jpg',
-    '20260505_105737.jpg',
-    '20260505_105751.jpg',
-    '20260505_145452.jpg',
-    '20260505_145518.jpg',
-    '20260505_145533.jpg',
-    '20260505_145536.jpg',
-    '20260505_145538.jpg',
-    '20260508_120811.jpg',
-    '20260508_131305.jpg',
-    '20260508_140722.jpg',
-    '20260508_140729.jpg',
-    '20260508_140751.jpg',
-    '20260508_140811.jpg',
-    '20260508_140904.jpg',
-    '20260509_122744.jpg',
-    '20260509_122755.jpg',
-    '20260509_122757.jpg',
-    '20260509_122803.jpg',
-    '20260509_122804.jpg',
-    '20260509_122824.jpg',
-    '20260509_122830.jpg',
-    '20260509_122858.jpg',
-    '20260509_122900.jpg',
-    '20260509_122902.jpg',
-    '20260509_122904.jpg',
-    '20260509_142112.jpg',
-    '20260509_142119.jpg',
-    '20260509_142120.jpg',
-    '20260509_142147.jpg',
-    '20260509_142148.jpg',
-    '20260509_142149.jpg',
-    '20260509_142156.jpg',
-    '20260509_142157.jpg',
-    '20260509_142207.jpg',
-    '20260509_142210.jpg',
-    '20260509_142213.jpg',
-    '20260509_142238.jpg',
-    '20260509_142239.jpg',
-    '20260509_142241.jpg',
-    '20260509_142242.jpg',
-    'AWSUCU (138 of 193).jpg',
-    'AWSUCU (14 of 193).jpg',
-    'AWSUCU (140 of 193).jpg',
-    'AWSUCU (18 of 193).jpg',
-    'AWSUCU (19 of 193).jpg',
-    'AWSUCU (194 of 193).jpg',
-    'AWSUCU (62 of 193).jpg',
-    'AWSUCU (85 of 193).jpg',
-    'AWSUCU (86 of 193).jpg',
-    'AWSUCU (89 of 193).jpg',
-    'AWSUCU (90 of 193).jpg',
-    'AWSUCU (98 of 193).jpg',
-    'Epicshots256-139.jpg',
-    'Epicshots256-161.jpg',
-    'IMG-20250410-WA0053.jpg',
-    'IMG-20250630-WA0022.jpg',
-    'IMG-20250630-WA0023.jpg',
-    'IMG-20250630-WA0025.jpg',
-    'IMG-20250630-WA0026.jpg',
-    'IMG-20250630-WA0027.jpg',
-    'IMG-20251019-WA0132.jpg',
-    'IMG-20251019-WA0134.jpg',
-    'IMG-20251019-WA0136.jpg',
-    'IMG_0035.HEIC.heif',
-    'IMG_0036.HEIC.heif',
-    'IMG_0037.HEIC.heif',
-    'IMG_0038.HEIC.heif',
-    'IMG_0039.HEIC.heif',
-    'IMG_0210.HEIC.heif',
-    'IMG_0211.HEIC.heif',
-    'IMG_0212.HEIC.heif',
-    'IMG_0213.HEIC.heif',
-    'IMG_0214.HEIC.heif',
-    'IMG_0215.HEIC.heif',
-    'IMG_0226.HEIC.heif',
-    'IMG_0237.HEIC.heif',
-    'IMG_0255.HEIC.heif',
-    'IMG_0362.HEIC.heif',
-    'IMG_0507.HEIC.heif',
-    'IMG_0518.HEIC.heif',
-    'IMG_0838.HEIC.heif',
-    'IMG_0839.HEIC.heif',
-    'IMG_0840.HEIC.heif',
-    'IMG_0841.HEIC.heif',
-    'IMG_0842.HEIC.heif',
-    'IMG_0850.HEIC.heif',
-    'IMG_0921.jpg',
-    'IMG_1003.jpg',
-    'IMG_1004.jpg',
-    'IMG_7236.jpg',
-    'IMG_7300.jpg',
-    'IMG_7401.jpg',
-    'IMG_7403.jpg',
-    'IMG_7405.jpg',
-    'IMG_7408.jpg',
-    'Snapchat-1866268840.jpg',
-    '_DSC5805.jpg',
-    '_DSC5806.jpg',
-    '_DSC6316.jpg',
-    '_DSC6317.jpg',
-    '_MG_6800.jpg',
-    '_MG_7031.jpg',
-    '_MG_7033.jpg',
-    '_MG_7036.jpg',
-    '_MG_7037.jpg',
-    '_MG_7038.jpg',
-    '_MG_7040.jpg',
-    '_MG_7041.jpg',
-    '_MG_7050.jpg',
-    '_MG_7057.jpg',
-    '_MG_7061.jpg',
-    'doodles-ai-1773816765606.jpg',
-    'file_00000000eccc622f89485eefcb3b20dd_conversation_id=67f8be79-9a14-8002-a9b5-220272ba8c24&message_id=b51fa56e-418f-4b62-b002-c198c4c10683.jpg',
-    'file_00000000f89061f78906d6c065990a59_conversation_id=67f756c9-e308-8002-a3c2-b2ab6bc303fe&message_id=31678d4a-0117-4a97-86c8-b7527bd116c4.jpg'
-];
-
-let currentPhotoIndex = 0;
-const photosPerLoad = 12;
-
-function loadPhotos(count) {
-    const endIndex = Math.min(currentPhotoIndex + count, allPhotos.length);
-    
-    console.log(`Loading photos from ${currentPhotoIndex} to ${endIndex}`);
-    
-    for (let i = currentPhotoIndex; i < endIndex; i++) {
-        const photoItem = document.createElement('div');
-        photoItem.className = 'gallery-item';
-        photoItem.style.animationDelay = `${(i - currentPhotoIndex) * 0.1}s`;
-        
-        const img = document.createElement('img');
-        // Use encodeURIComponent for the filename to handle special characters
-        img.src = photoFolder + encodeURIComponent(allPhotos[i]);
-        img.alt = `Event photo ${i + 1}`;
-        img.loading = 'lazy';
-        
-        console.log(`Loading image ${i + 1}:`, img.src);
-        
-        // Error handling for images that fail to load
-        img.onerror = function() {
-            console.error('Failed to load:', this.src);
-            this.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="500"%3E%3Crect fill="%23333" width="400" height="500"/%3E%3Ctext fill="%2300d4ff" x="50%25" y="50%25" text-anchor="middle" dy=".3em"%3EImage Not Found%3C/text%3E%3C/svg%3E';
-        };
-        
-        img.onload = function() {
-            console.log('Successfully loaded:', this.src);
-        };
-        
-        const overlay = document.createElement('div');
-        overlay.className = 'gallery-item-overlay';
-        
-        const title = document.createElement('p');
-        title.className = 'gallery-item-title';
-        title.textContent = `Event Memory ${i + 1}`;
-        
-        overlay.appendChild(title);
-        photoItem.appendChild(img);
-        photoItem.appendChild(overlay);
-        photoGallery.appendChild(photoItem);
-    }
-    
-    currentPhotoIndex = endIndex;
-    
-    console.log(`Current index: ${currentPhotoIndex}, Total photos: ${allPhotos.length}`);
-    
-    // Show/hide load more button
-    if (currentPhotoIndex >= allPhotos.length) {
-        loadMoreBtn.classList.remove('visible');
-        console.log('All photos loaded, hiding button');
-    } else {
-        loadMoreBtn.classList.add('visible');
-        console.log('More photos available, showing button');
-    }
-}
-
-// Load initial photos
-if (photoGallery) {
-    console.log('Photo gallery found, loading photos...');
-    console.log('Total photos available:', allPhotos.length);
-    console.log('Photos per load:', photosPerLoad);
-    loadPhotos(photosPerLoad);
-    
-    // Show the load more button initially if there are more photos
-    if (allPhotos.length > photosPerLoad && loadMoreBtn) {
-        loadMoreBtn.classList.add('visible');
-        console.log('Load more button shown');
-    }
-} else {
-    console.error('Photo gallery element not found!');
-}
-
-// Load more button handler
-if (loadMoreBtn) {
-    loadMoreBtn.addEventListener('click', () => {
-        loadPhotos(photosPerLoad);
-    });
-}
-
-}); // End DOMContentLoaded
 
 // ===================================
 // Photo Gallery Interactions (Legacy - Removed)
@@ -1506,27 +1072,27 @@ document.addEventListener('DOMContentLoaded', function() {
         openModal(currentImageIndex);
     }
     
-    // Add click event to gallery items
+    // Add click event to gallery items via delegation
     function attachGalleryClickEvents() {
         updateGalleryImages();
-        
-        document.querySelectorAll('.gallery-item').forEach((item, index) => {
-            item.addEventListener('click', function() {
-                openModal(index);
-            });
+    }
+
+    const photoGalleryEl = document.getElementById('photoGallery');
+    if (photoGalleryEl) {
+        photoGalleryEl.addEventListener('click', (e) => {
+            const item = e.target.closest('.gallery-item');
+            if (!item) return;
+            updateGalleryImages();
+            const items = Array.from(document.querySelectorAll('.gallery-item'));
+            const index = items.indexOf(item);
+            if (index >= 0) openModal(index);
         });
     }
-    
+
+    document.addEventListener('gallery:updated', attachGalleryClickEvents);
+
     // Initial attachment
     setTimeout(attachGalleryClickEvents, 500);
-    
-    // Re-attach when new photos are loaded
-    const loadMoreBtn = document.getElementById('loadMorePhotos');
-    if (loadMoreBtn) {
-        loadMoreBtn.addEventListener('click', function() {
-            setTimeout(attachGalleryClickEvents, 500);
-        });
-    }
     
     // Close button click
     if (closeBtn) {

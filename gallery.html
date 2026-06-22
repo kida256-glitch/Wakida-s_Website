@@ -1,8 +1,8 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="theme-color" content="#0a0e27">
     
@@ -13,7 +13,8 @@
     <link rel="preload" href="script.js" as="script">
     <title>Gallery | Benjamin Wakida Eldon</title>
     <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-SfVOwf7lSH34l7KNfuCI49S4FcHo+RaLmFH1THijJpRJ57dJ5+8DZeIch0NU5+WNIYaAn4Jh/NdO80shFPUu+w==" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-SfVOwf7lSH34l7KNfuCI49S4FcHo+RaLmFH1THijJpRJ57dJ5+8DZeIch0NU5+WNIYaAn4Jh/NdO80shFPUu+w==" crossorigin="anonymous" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
 </head>
 <body>
     <!-- Animated Background Canvas -->
@@ -40,19 +41,41 @@
         </div>
     </nav>
 
-    <!-- Gallery Section -->
-    <section id="gallery-page" class="gallery page-section">
-        <div class="container">
-            <h2 class="section-title">My Event <span class="highlight-text">Gallery</span></h2>
-            <p class="section-subtitle">A visual journey through my tech community events and experiences</p>
-            
-            <div class="gallery-grid" id="photoGallery">
-                <!-- Photos will be loaded dynamically -->
+    <!-- Circular 3D Gallery Showcase -->
+    <section class="circular-gallery-section" aria-label="Featured event gallery">
+        <div class="circular-gallery-scroll-track">
+            <div class="circular-gallery-sticky">
+                <div class="circular-gallery-header">
+                    <p class="gallery-subtitle">Featured Moments</p>
+                    <h2 class="section-title">My Event <span class="highlight-text">Gallery</span></h2>
+                    <p class="circular-gallery-intro"><strong>Scroll to rotate</strong> through highlights from <span class="intro-highlight">AWS events</span>, <span class="intro-highlight">community building</span>, and <span class="intro-highlight">tech workshops</span> across Uganda.</p>
+                </div>
+                <div id="circularGallery" class="circular-gallery" role="region" aria-label="Circular 3D Gallery">
+                    <div id="circularGalleryStage" class="circular-gallery-stage"></div>
+                </div>
+                <p class="circular-gallery-hint">Scroll to explore Â· Auto-rotating showcase</p>
             </div>
-            
+        </div>
+    </section>
+
+    <!-- Organized Photo Grid -->
+    <section id="gallery-page" class="gallery gallery-grid-section page-section">
+        <div class="container">
+            <div class="gallery-grid-header">
+                <div>
+                    <h2 class="section-title">Browse <span class="highlight-text">All Photos</span></h2>
+                    <p class="section-subtitle">Filter by event type to explore the full collection</p>
+                </div>
+                <p class="gallery-photo-count" id="galleryPhotoCount">Loading photos...</p>
+            </div>
+
+            <div class="gallery-filters" id="galleryFilters" role="tablist" aria-label="Gallery filters"></div>
+
+            <div class="gallery-grid" id="photoGallery"></div>
+
             <div class="gallery-cta">
                 <button class="btn btn-primary" id="loadMorePhotos">
-                    <i class="fas fa-images"></i> Load More Stories
+                    <i class="fas fa-images"></i> Load More Photos
                 </button>
             </div>
         </div>
@@ -89,33 +112,35 @@
             
             <!-- Social Links in Footer -->
             <div class="footer-social-links">
-                <a href="https://github.com/kida256-glitch" target="_blank" class="footer-social-link" aria-label="GitHub">
-                    <i class="fab fa-github"></i>
+                <a href="https://github.com/kida256-glitch" target="_blank" rel="noopener noreferrer" class="footer-social-link" aria-label="GitHub">
+                    <img src="assets/icons/social/github.svg" alt="" class="footer-social-icon-img" width="24" height="24" loading="lazy">
                 </a>
-                <a href="https://www.linkedin.com/in/benjamin-eldon-wakida/" target="_blank" class="footer-social-link" aria-label="LinkedIn">
-                    <i class="fab fa-linkedin"></i>
+                <a href="https://www.linkedin.com/in/benjamin-eldon-wakida/" target="_blank" rel="noopener noreferrer" class="footer-social-link" aria-label="LinkedIn">
+                    <img src="assets/icons/social/linkedin.svg" alt="" class="footer-social-icon-img" width="24" height="24" loading="lazy">
                 </a>
-                <a href="https://x.com/kidaeldon" target="_blank" class="footer-social-link" aria-label="X (Twitter)">
-                    <i class="fab fa-x-twitter"></i>
+                <a href="https://x.com/kidaeldon" target="_blank" rel="noopener noreferrer" class="footer-social-link" aria-label="X">
+                    <img src="assets/icons/social/x.svg" alt="" class="footer-social-icon-img" width="24" height="24" loading="lazy">
                 </a>
-                <a href="https://www.instagram.com/kidaeldon_ug/" target="_blank" class="footer-social-link" aria-label="Instagram">
-                    <i class="fab fa-instagram"></i>
+                <a href="https://www.instagram.com/kidaeldon_ug/" target="_blank" rel="noopener noreferrer" class="footer-social-link" aria-label="Instagram">
+                    <img src="assets/icons/social/instagram.svg" alt="" class="footer-social-icon-img" width="24" height="24" loading="lazy">
                 </a>
-                <a href="https://www.tiktok.com/@benjamin.wakida" target="_blank" class="footer-social-link" aria-label="TikTok">
-                    <i class="fab fa-tiktok"></i>
+                <a href="https://www.tiktok.com/@benjamin.wakida" target="_blank" rel="noopener noreferrer" class="footer-social-link" aria-label="TikTok">
+                    <img src="assets/icons/social/tiktok.svg" alt="" class="footer-social-icon-img" width="24" height="24" loading="lazy">
                 </a>
-                <a href="https://bsky.app" target="_blank" class="footer-social-link" aria-label="Bluesky">
-                    <i class="fas fa-cloud"></i>
+                <a href="https://bsky.app" target="_blank" rel="noopener noreferrer" class="footer-social-link" aria-label="Bluesky">
+                    <img src="assets/icons/social/bluesky.svg" alt="" class="footer-social-icon-img" width="24" height="24" loading="lazy">
                 </a>
             </div>
             
             <div class="footer-copyright">
-                <p>Copyright © Benjamin Wakida Eldon. All Rights Reserved.</p>
+                <p>Copyright Â© Benjamin Wakida Eldon. All Rights Reserved.</p>
             </div>
         </div>
     </footer>
 
     <script defer src="script.js"></script>
+    <script defer src="gallery.js"></script>
     <script defer src="animated-background.js"></script>
 </body>
 </html>
+

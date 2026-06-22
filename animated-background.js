@@ -31,7 +31,8 @@ class ProceduralGroundBackground {
     }
     
     isMobileDevice() {
-        return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        return window.matchMedia('(max-width: 768px)').matches ||
+            /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
     }
     
     init() {
