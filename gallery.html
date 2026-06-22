@@ -42,19 +42,25 @@
     </nav>
 
     <!-- Circular 3D Gallery Showcase -->
-    <section class="circular-gallery-section" aria-label="Featured event gallery">
-        <div class="circular-gallery-scroll-track">
-            <div class="circular-gallery-sticky">
-                <div class="circular-gallery-header">
-                    <p class="gallery-subtitle">Featured Moments</p>
-                    <h2 class="section-title">My Event <span class="highlight-text">Gallery</span></h2>
-                    <p class="circular-gallery-intro"><strong>Scroll to rotate</strong> through highlights from <span class="intro-highlight">AWS events</span>, <span class="intro-highlight">community building</span>, and <span class="intro-highlight">tech workshops</span> across Uganda.</p>
-                </div>
+    <section class="circular-gallery-section page-section" aria-label="Featured event gallery">
+        <div class="container circular-gallery-wrap">
+            <div class="circular-gallery-header">
+                <p class="gallery-subtitle">Featured Moments</p>
+                <h2 class="section-title">My Event <span class="highlight-text">Gallery</span></h2>
+                <p class="circular-gallery-intro">Use the <strong>arrows</strong> to browse highlights from <span class="intro-highlight">AWS events</span>, <span class="intro-highlight">community building</span>, and <span class="intro-highlight">tech workshops</span> across Uganda.</p>
+            </div>
+            <div class="circular-gallery-controls">
+                <button type="button" class="circular-gallery-nav circular-gallery-prev" id="circularGalleryPrev" aria-label="Previous photo">
+                    <i class="fas fa-chevron-left" aria-hidden="true"></i>
+                </button>
                 <div id="circularGallery" class="circular-gallery" role="region" aria-label="Circular 3D Gallery">
                     <div id="circularGalleryStage" class="circular-gallery-stage"></div>
                 </div>
-                <p class="circular-gallery-hint">Scroll to explore Â· Auto-rotating showcase</p>
+                <button type="button" class="circular-gallery-nav circular-gallery-next" id="circularGalleryNext" aria-label="Next photo">
+                    <i class="fas fa-chevron-right" aria-hidden="true"></i>
+                </button>
             </div>
+            <p class="circular-gallery-meta" id="circularGalleryCounter" aria-live="polite">1 / 12</p>
         </div>
     </section>
 
